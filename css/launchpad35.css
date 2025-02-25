@@ -1,0 +1,521 @@
+/* CSS Variables */
+:root {
+	/* Dimensions */
+	--pad-size: 55px;
+	--gap: 5px;
+	--header-height: 45px;
+	
+	/* Colors - Light Theme */
+	--bg-color: #e8e8e8;
+	--pad-color: #b7b7b7;
+	--text-color: #777777;
+	--active-color: #2c6aa0;
+	--success-color: #4CAF50;
+	--error-color: #f44336;
+	
+	/* Pad Highlights */
+	--highlight-amber: rgba(255, 191, 0, 0.6);
+	--highlight-amber-low: rgba(255, 191, 0, 0.3);
+	--highlight-red: rgba(255, 0, 0, 0.6);
+	--highlight-red-low: rgba(255, 0, 0, 0.3);
+	--highlight-green: rgba(0, 255, 0, 0.6);
+	--highlight-green-low: rgba(0, 255, 0, 0.3);
+	--highlight-yellow: rgba(255, 255, 0, 0.3);
+	
+	/* Typography */
+	--font-family: 'Courier New', Courier, monospace;
+	--font-size-small: 8px;
+	--font-size-normal: 12px;
+	--font-size-large: 16px;
+}
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-color: #1a1a1a;
+		--pad-color: #333;
+		--text-color: #fff;
+	}
+}
+
+/* Base Styles */
+html {
+	height: 100%;
+	touch-action: none;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: var(--font-family);
+	background: var(--bg-color);
+	color: var(--text-color);
+}
+
+div {
+	box-sizing: border-box;
+}
+
+button {
+	user-select: none;
+}
+
+/* Layout */
+.container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	width: 100%;
+	height: var(--header-height);
+	min-height: var(--header-height);
+	flex-basis: var(--header-height);
+	z-index: 10;
+	padding: 0px var(--gap);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.fullwrap {
+	position: absolute;
+	padding-top: var(--header-height);
+	width: 100%;
+	height: 100%;
+	display: flex;
+}
+
+.subwrap {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Session */
+.session {
+	display: flex;
+	gap: var(--gap);
+}
+
+/* Controls */
+.ctrl {
+	display: flex;
+	gap: var(--gap);
+}
+
+.midi {
+	color: rgba(255, 0, 0, 0.5);
+	transition: color 0.3s ease;
+}
+
+.midi.up {
+	color: rgba(0, 255, 0, 0.5);
+}
+
+/* Launchpad Grid */
+.launchwrap {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.launchpad {
+	height: 100%;
+	display: grid;
+	grid-template-columns: repeat(9, minmax(0, 1fr));
+	grid-template-rows: repeat(9, minmax(0, 1fr));
+	gap: 1em;
+	padding: 1em;
+}
+
+/* Pads */
+.pad {
+	align-self: center;
+	justify-self: center;
+	width: var(--pad-size);
+	height: var(--pad-size);
+	background: var(--pad-color);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	padding: 0;
+	user-select: none;
+	transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pad.round {
+	border-radius: 50%;
+}
+
+/* Pad Colors */
+.pad.yellow { background: var(--highlight-yellow); }
+.pad.green { background: var(--highlight-green); }
+.pad.green-low { background: var(--highlight-green-low); }
+.pad.red { background: var(--highlight-red); }
+.pad.red-low { background: var(--highlight-red-low); }
+.pad.amber { background: var(--highlight-amber); }
+.pad.amber-low { background: var(--highlight-amber-low); }
+
+/* Draggable Pad States */
+.pad:not(.round)[draggable="true"] {
+	cursor: grab;
+}
+
+.pad.dragging {
+	cursor: grabbing;
+	opacity: 0.7;
+	transform: scale(0.95);
+}
+
+.pad.drag-over {
+	transform: scale(1.05);
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Empty Pad Indicator */
+.pad:not(.round):not(.sample-name):not(.pad-image)::after {
+	content: "+";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: rgba(255, 255, 255, 0.3);
+	font-size: var(--font-size-large);
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.pad:not(.round):not(.sample-name):not(.pad-image).drag-over::after {
+	opacity: 1;
+}
+
+/* Pad Content */
+.pad-image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+.note {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	font-size: var(--font-size-small);
+	color: rgba(255, 255, 255, 0.7);
+	pointer-events: none;
+}
+
+.label {
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+	font-size: var(--font-size-small);
+	color: var(--text-color);
+	pointer-events: none;
+}
+
+.sample-name {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	font-size: var(--font-size-small);
+	color: var(--text-color);
+	text-align: center;
+	max-width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Panel */
+.panel {
+	min-height: 200px;
+	background: var(--bg-color);
+	border-top: 1px solid var(--pad-color);
+	position: relative;
+	overflow: hidden;
+}
+
+.waveform-canvas {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.zone-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+}
+
+.zone-handle {
+	position: absolute;
+	width: 4px;
+	height: 100%;
+	background: #006aff;
+	cursor: ew-resize;
+	pointer-events: auto;
+	touch-action: none;
+}
+
+.zone-handle.left {
+	left: 20px;
+}
+
+.zone-handle.right {
+	right: 20px;
+}
+
+.zone-handle:hover,
+.zone-handle:active {
+	background: #2986ff;
+}
+
+.zone-display {
+	position: absolute;
+	height: 100%;
+	background: rgba(0, 106, 255, 0.1);
+	pointer-events: none;
+}
+
+/* Drag state */
+.zone-container.dragging .zone-handle {
+	background: #2986ff;
+}
+
+/* Trash Zone */
+.trash-zone {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--pad-size);
+	height: var(--pad-size);
+	border-radius: 4px;
+	background: rgba(84, 31, 31, 0.6);
+	color: var(--text-color);
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.trash-zone.hidden {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.trash-zone.drag-over {
+	background: rgba(200, 40, 40, 0.9);
+	color: white;
+	transform: scale(1.1);
+}
+
+.trash-zone svg {
+	width: 24px;
+	height: 24px;
+}
+
+/* Controls */
+.mode-bar {
+	display: flex;
+	gap: var(--gap);
+}
+
+.mode-button {
+	padding: 8px 16px;
+	background: var(--pad-color);
+	border: none;
+	border-radius: 4px;
+	color: var(--text-color);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.mode-button:hover {
+	background: #444;
+}
+
+.mode-button.active {
+	background: var(--active-color);
+	transform: scale(0.95);
+}
+
+/* Input Controls */
+select,
+button,
+input {
+	padding: 8px 12px;
+	background: var(--pad-color);
+	border: none;
+	border-radius: 4px;
+	color: var(--text-color);
+	cursor: pointer;
+	outline: none;
+	transition: all 0.2s ease;
+}
+
+button:hover {
+	background: #444;
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+/* State Classes */
+.active { background: var(--active-color); }
+.success { background: var(--success-color); }
+.error { background: var(--error-color); }
+
+/* File Explorer */
+.explorer {
+	width: 200px;
+	min-width: 200px;
+	flex-basis: 200px;
+	padding: 5px;
+	overflow-y: auto;
+}
+
+.file-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.file-item {
+	padding: 8px;
+	background: var(--pad-color);
+	border-radius: 4px;
+	cursor: grab;
+	font-size: var(--font-size-normal);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: background-color 0.2s ease;
+}
+
+.file-item:hover {
+	background: #444;
+}
+
+/* Pattern List */
+.pattern-list-container {
+	width: 200px;
+	padding: 10px;
+	background: var(--bg-color);
+	border-left: 1px solid var(--pad-color);
+}
+
+.pattern-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.new-pattern-btn {
+	width: 100%;
+	margin-bottom: 10px;
+	padding: 8px;
+	background: var(--active-color);
+	color: white;
+}
+
+.pattern-entry {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+	background: var(--pad-color);
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.pattern-entry.active {
+	background: var(--active-color);
+}
+
+.pattern-entry.new {
+	background: var(--error-color);
+}
+
+.delete-pattern-btn {
+	padding: 4px 8px;
+	background: transparent;
+	color: var(--text-color);
+	font-size: var(--font-size-large);
+	transition: color 0.2s ease;
+}
+
+.delete-pattern-btn:hover {
+	color: var(--error-color);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+	background-color: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--pad-color);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-button {
+	display: none;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: transparent;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	:root {
+		--pad-size: 45px;
+	}
+
+	.mode-button {
+		padding: 6px 12px;
+		font-size: var(--font-size-small);
+	}
+
+	.explorer,
+	.pattern-list-container {
+		width: 150px;
+	}
+}
+
+@media (max-width: 480px) {
+	:root {
+		--pad-size: 35px;
+	}
+
+	.header {
+		flex-direction: column;
+		height: auto;
+	}
+
+	.mode-bar {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}

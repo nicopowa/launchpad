@@ -1,0 +1,175 @@
+:root {
+	--bg-color: #e8e8e8;
+	--text-color: #454545;
+	--font-family: "Courier New", Courier, monospace;
+
+	--midi-nolink: #b20000;
+	--midi-linked: #0b8911;
+
+	--launch-back: #bebebe;
+
+	--pad-border: #cccccc;
+
+	--pad-off: #ababab;
+	--pad-red: #ff0000;
+	--pad-green: #00ff00;
+	--pad-amber: #ffd900;
+	--pad-orange: #ffa200;
+	--pad-yellow: #ffff00;
+
+	--pad-low: 0.22;
+	--pad-mid: 0.44;
+	--pad-full: 0.66;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-color: #1a1a1a;
+		--text-color: #777777;
+
+		--launch-back: #222222;
+
+		--pad-border: #444444;
+
+		--pad-off: #333333;
+	}
+}
+
+html {
+	touch-action: none;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	overflow: hidden;
+	font-family: var(--font-family);
+	background: var(--bg-color);
+	color: var(--text-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+div {
+	box-sizing: border-box;
+}
+
+.wrap {
+	width: 96%;
+	height: 96%;
+}
+
+.launchpad {
+	display: grid;
+	grid-template-columns: repeat(9, 1fr);
+	grid-template-rows: repeat(9, 1fr);
+	gap: 0.5em;
+	padding: 0.5em;
+	background: var(--launch-back);
+	border-radius: 8px;
+	aspect-ratio: 1;
+	/* max-width: 100%; */
+	max-height: 100%;
+	margin: 0 auto;
+	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+	touch-action: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.launchpad.linked .gst {
+	border-color: var(--midi-linked);
+}
+
+.pad {
+	position: relative;
+	/* aspect-ratio: 1; */
+	border-radius: 4px;
+	border: 2px solid var(--pad-border);
+	overflow: hidden;
+}
+
+.pad:before {
+	content: " ";
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.pad[data-color="off"]:before {
+	background: var(--pad-off);
+}
+
+.pad[data-color="red"]:before {
+	background: var(--pad-red);
+}
+
+.pad[data-color="green"]:before {
+	background: var(--pad-green);
+}
+
+.pad[data-color="amber"]:before {
+	background: var(--pad-amber);
+}
+
+.pad[data-color="orange"]:before {
+	background: var(--pad-orange);
+}
+
+.pad[data-color="yellow"]:before {
+	background: var(--pad-yellow);
+}
+
+.pad[data-level="full"]:before {
+	opacity: var(--pad-full);
+}
+
+.pad[data-level="mid"]:before {
+	opacity: var(--pad-mid);
+}
+
+.pad[data-level="low"]:before {
+	opacity: var(--pad-low);
+}
+
+.pad.gst {
+	opacity: 0.2;
+	cursor: default;
+	border-color: var(--midi-nolink);
+}
+
+.pad.top,
+.pad.rht,
+.pad.gst {
+	left: 10%;
+	top: 10%;
+	width: 80%;
+	height: 80%;
+}
+
+.pad.top,
+.pad.rht {
+	border-radius: 50%;
+}
+
+.hnt {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 15%;
+	opacity: 0.6;
+	color: var(--text-color);
+	font-size: .6em;
+	pointer-events: none;
+}
