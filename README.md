@@ -1,15 +1,38 @@
-# WebMIDI Launchpad Controller Project
+# WebMIDI Sampler + Novation Launchpad S
 
 A Claude experiment
 
-[Launchpad v3.5](https://nicopowa.github.io/launchpad/launchpad35.html)
+## Features :
 
-[Launchpad v3.7](https://nicopowa.github.io/launchpad/launchpad37.html)
+- Auto detect midi controller
+- Real time connection monitoring
+- Draw Launchpad S UI
+- Map physical buttons
+- Init WebAudio
+- Browse working directory
+- Decode audio files
+- Drag&drop samples on pads
+- Audio wave forms
+- Samples trimming
+- Sync Launchpad LEDs
+- Drop samples from outside (saved in workdir)
+- Drop images on pads to replace samples labels
+- Save & restore session
 
-[Launchpad v3.7 EXT](https://nicopowa.github.io/launchpad/launchpad37ext.html)
+## Code
+
+[Launchpad v3.5](https://nicopowa.github.io/launchpad/launchpad35.html) : first messy version, most features are stable, unmaintainable, major problem in sequencer clock and pattern recording.
+
+[Launchpad scratch](https://nicopowa.github.io/launchpad/launchpad00.html) : typed on a real keyboard, physical + virtual launchpad seamlessly merged in a single class
+
+*Ask Claude to describe Launchpad v3.5 features, paste list in a new chat with template and official documentation.*
+
+[Launchpad v3.7](https://nicopowa.github.io/launchpad/launchpad37.html) : it's running ! not perfect of course, but really impressive !
+
+"Extended thinking mode" was not enabled, but the night is not over.
 
 
-## Overview
+## Claude's Overview
 
 This project is a ~~sophisticated~~ web-based MIDI controller application specifically designed to work with Novation Launchpad devices. It transforms a standard MIDI controller into a powerful sample pad and beat sequencer that runs directly in the browser using modern Web Audio and WebMIDI APIs.
 
